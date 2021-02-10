@@ -8,18 +8,22 @@ import {
 import { useField } from "formik";
 
 type InputFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  name: string;
   label: string;
-  placeholder: string;
+  name: string;
 };
 
-export function InputField(props: InputFieldProps) {
+export function InputField({ label, size: _, ...props }: InputFieldProps) {
   const [field, { error }] = useField(props);
 
   return (
     <FormControl isInvalid={!!error}>
-      <FormLabel htmlFor={field.name}>{props.label}</FormLabel>
-      <Input {...field} id={field.name} placeholder={props.placeholder} />
+      <FormLabel htmlFor={field.name}>{label}</FormLabel>
+      <Input
+        {...field}
+        {...props}
+        id={field.name}
+        placeholder={props.placeholder}
+      />
       {error && <FormErrorMessage>{error}</FormErrorMessage>}
     </FormControl>
   );
