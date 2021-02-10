@@ -5,10 +5,12 @@ import { Wrapper } from "src/components/Wrapper";
 import { InputField } from "src/components/InputField";
 import { useRegisterMutation } from "src/generated/graphql";
 import { toErrorMap } from "src/util/toErrorMap";
+import { useRouter } from "next/router";
 
 interface RegisterProps {}
 
 export default function Register({}: RegisterProps) {
+  const router = useRouter();
   const [, register] = useRegisterMutation();
 
   return (
@@ -19,6 +21,8 @@ export default function Register({}: RegisterProps) {
           const { data } = await register(values);
           if (data?.register.errors) {
             setErrors(toErrorMap(data.register.errors));
+          } else if (data?.register.user) {
+            router.push("/");
           }
         }}
       >
